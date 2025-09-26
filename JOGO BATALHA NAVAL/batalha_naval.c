@@ -1,83 +1,86 @@
 #include <stdio.h>
 
 // --- Constantes para facilitar a manutenção do código ---
-// Define o tamanho do tabuleiro (10x10)
 #define TAMANHO_TABULEIRO 10
-// Define o tamanho fixo dos navios (3 posições)
 #define TAMANHO_NAVIO 3
-// Define os valores que representam água e navio
 #define AGUA 0
 #define NAVIO 3
 
-int main()
-{
-    // 1. REPRESENTAÇÃO DO TABULEIRO
-    // Declara uma matriz 10x10 de inteiros para ser o nosso tabuleiro.
+int main() {
+    // 1. CRIAÇÃO E INICIALIZAÇÃO DO TABULEIRO
+    // Declara uma matriz 10x10 para ser o nosso tabuleiro.
     int tabuleiro[TAMANHO_TABULEIRO][TAMANHO_TABULEIRO];
     int linha, coluna; // Variáveis de controle para os loops
 
-    // --- Inicialização do Tabuleiro ---
-    // Este bloco de código percorre cada posição da matriz.
-    printf("Inicializando o tabuleiro com agua (%d)...\n\n", AGUA);
-    for (linha = 0; linha < TAMANHO_TABULEIRO; linha++)
-    {
-        for (coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++)
-        {
-            // Define o valor de cada célula como 0 (AGUA).
+    // Inicializa todo o tabuleiro com o valor de AGUA (0).
+    // Esta parte do código não muda em relação ao nível anterior.
+    for (linha = 0; linha < TAMANHO_TABULEIRO; linha++) {
+        for (coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
             tabuleiro[linha][coluna] = AGUA;
         }
     }
 
-    // 2. POSICIONAMENTO DOS NAVIOS
-    // As coordenadas são definidas diretamente no código, como pedido.
-    // Lembre-se que em C, os índices de arrays começam em 0.
-    // Então, um tabuleiro 10x10 vai da linha 0 a 9 e coluna 0 a 9.
+    // 2. POSICIONAMENTO DOS QUATRO NAVIOS
+    // As coordenadas foram escolhidas cuidadosamente para garantir que os navios
+    // fiquem dentro dos limites do tabuleiro e não se sobreponham.
 
     // --- Navio 1: Horizontal ---
-    // Posição inicial: linha 2, coluna 1.
-    // Ocupará as posições (2,1), (2,2) e (2,3).
-    // Esta posição é válida pois 1 + TAMANHO_NAVIO (3) = 4, que é < 10.
-    int navioH_linha_inicial = 2;
-    int navioH_coluna_inicial = 1;
+    // Posição inicial: linha 1, coluna 4. Ocupará (1,4), (1,5), (1,6).
+    int navioH_linha_inicial = 1;
+    int navioH_coluna_inicial = 4;
 
     // --- Navio 2: Vertical ---
-    // Posição inicial: linha 5, coluna 6.
-    // Ocupará as posições (5,6), (6,6) e (7,6).
-    // Esta posição é válida pois 5 + TAMANHO_NAVIO (3) = 8, que é < 10.
-    // As posições também não se sobrepõem com o navio horizontal.
+    // Posição inicial: linha 5, coluna 8. Ocupará (5,8), (6,8), (7,8).
     int navioV_linha_inicial = 5;
-    int navioV_coluna_inicial = 6;
+    int navioV_coluna_inicial = 8;
+
+    // --- Navio 3: Diagonal Principal (\) ---
+    // Posição inicial: linha 0, coluna 0. Ocupará (0,0), (1,1), (2,2).
+    // Neste tipo de diagonal, linha e coluna aumentam juntas.
+    int navioD1_linha_inicial = 0;
+    int navioD1_coluna_inicial = 0;
+
+    // --- Navio 4: Diagonal Secundária (/) ---
+    // Posição inicial: linha 5, coluna 3. Ocupará (5,3), (6,2), (7,1).
+    // Neste tipo de diagonal, a linha aumenta e a coluna diminui.
+    int navioD2_linha_inicial = 5;
+    int navioD2_coluna_inicial = 3;
+
 
     // --- Colocando os navios no tabuleiro ---
-    // Este loop posiciona o navio horizontal.
-    // A linha fica fixa, e a coluna varia a partir do ponto inicial.
-    for (int i = 0; i < TAMANHO_NAVIO; i++)
-    {
+    printf("Posicionando 4 navios de tamanho %d...\n\n", TAMANHO_NAVIO);
+
+    // Loop para o navio Horizontal (linha fixa, coluna incrementa)
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
         tabuleiro[navioH_linha_inicial][navioH_coluna_inicial + i] = NAVIO;
     }
 
-    // Este loop posiciona o navio vertical.
-    // A coluna fica fixa, e a linha varia a partir do ponto inicial.
-    for (int i = 0; i < TAMANHO_NAVIO; i++)
-    {
+    // Loop para o navio Vertical (coluna fixa, linha incrementa)
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
         tabuleiro[navioV_linha_inicial + i][navioV_coluna_inicial] = NAVIO;
     }
 
-    // 3. EXIBIÇÃO DO TABULEIRO
-    // Este bloco de código imprime o estado final do tabuleiro no console.
+    // Loop para o navio Diagonal Principal (linha e coluna incrementam)
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        tabuleiro[navioD1_linha_inicial + i][navioD1_coluna_inicial + i] = NAVIO;
+    }
+
+    // Loop para o navio Diagonal Secundária (linha incrementa, coluna decrementa)
+    for (int i = 0; i < TAMANHO_NAVIO; i++) {
+        tabuleiro[navioD2_linha_inicial + i][navioD2_coluna_inicial - i] = NAVIO;
+    }
+
+    // 3. EXIBIÇÃO DO TABULEIRO FINAL
+    // Esta parte também não muda, apenas exibe a matriz final.
     printf("Tabuleiro final com os navios (%d) posicionados:\n", NAVIO);
     printf("-----------------------------------------\n");
-    for (linha = 0; linha < TAMANHO_TABULEIRO; linha++)
-    {
-        for (coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++)
-        {
-            // Imprime o valor da célula atual seguido de um espaço.
+    for (linha = 0; linha < TAMANHO_TABULEIRO; linha++) {
+        for (coluna = 0; coluna < TAMANHO_TABULEIRO; coluna++) {
             printf("%d ", tabuleiro[linha][coluna]);
         }
-        // Ao final de cada linha, imprime uma quebra de linha para formatar o tabuleiro.
         printf("\n");
     }
     printf("-----------------------------------------\n");
 
-    return 0; // Indica que o programa terminou com sucesso.
+    return 0;
 }
